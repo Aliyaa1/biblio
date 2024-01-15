@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  # service php pour manipuler le php
+  php: 
+    build: './php_docker/' # cherche doss a la racine 
+    volumes: #tout ce qui sera construit en local sera mis dedans 
+      - ./www/:/var/www/html
+
+  # service apache,besoin de build apres php (besoin que service php soit demarré)
+  apache:
+    build: './apache_docker'
+    depends_on:
+      - php
+    ports:
+      - '8082:80'
+    volumes:
+      - ./www/:/var/www/html
+    
+
+
