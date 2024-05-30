@@ -1,2 +1,8 @@
 # vscod
 .vscode
+# env file
+.env
+/database
+
+# config serveur
+.htaccess

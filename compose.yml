@@ -4,6 +4,8 @@ services:
   # service php pour manipuler le php
   php: 
     build: './php_docker/' # cherche doss a la racine 
+    env_file:
+      - .env
     volumes: #tout ce qui sera construit en local sera mis dedans 
       - ./www/:/var/www/html
 
@@ -17,5 +19,30 @@ services:
     volumes:
       - ./www/:/var/www/html
     
+# service mariadb
+  mariadb: 
+    image: mariadb:11.2
+    ports:
+      - '3308:3306'
+    env_file: 
+      - .env
+    volumes: 
+      - bibliodatabase:/var/lib/mysql
+
+  # ajout du service phpmyadmin pr acceder en mode graphique a la base de donnée
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+     - '8081:80'
+    environment:
+      - PMA_HOST=mariadb
+      # besoin que mariadb soit lancée avant de commencer avec phpmyadmin
+    depends_on:
+      - mariadb
+
+# vol nommé bibliodatabasse géré par docker engine 
+volumes:
+  bibliodatabase:
+  
 
 
